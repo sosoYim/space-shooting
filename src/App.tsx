@@ -1,7 +1,7 @@
-import Space from "./components/Space";
+import Space from './components/Space'
 
 function App() {
-  return <Space />;
+  return <Space />
 }
 
-export default App;
+export default App
