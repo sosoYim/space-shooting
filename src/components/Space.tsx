@@ -1,9 +1,10 @@
 import { ThreeElements, useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useGame } from '../hooks/useGame'
 import Boat from './Boat'
 import dat from 'dat.gui'
 import { useMove } from '../hooks/useMove'
+import Bombs from './Bombs'
 
 function Box(props: ThreeElements['mesh']) {
   const meshRef = useRef<THREE.Mesh>(null!)
@@ -36,6 +37,7 @@ export default function Space() {
       <Box position={[-1.2, 0, 0]} onClick={startGame} />
       <Box position={[1.2, 0, 0]} onClick={endGame} />
       <Boat x={x} z={z} />
+      <Bombs fire={start} />
     </>
   )
 }
