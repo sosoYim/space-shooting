@@ -1,8 +1,7 @@
-import { useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useRef } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useRef } from 'react'
 import { useGame } from '../hooks/useGame'
 import Boat from './Boat'
-import dat from 'dat.gui'
 import { useMove } from '../hooks/useMove'
 import Bombs from './Bombs'
 import StartButton from './StartButton'
@@ -12,13 +11,6 @@ import { isIntersecting } from '../utils/isIntersecting'
 export default function Space() {
   const { start, startGame, endGame, duration } = useGame()
   const { x, z, resetMovement } = useMove()
-
-  const camera = useThree(({ camera }) => camera)
-  useEffect(() => {
-    const gui = new dat.GUI()
-    gui.add(camera.position, 'y', -100, 100, 0.01).name('카메라 Y')
-    gui.add(camera.position, 'z', -100, 100, 0.01).name('카메라 Z')
-  }, [])
 
   const bombsRef = useRef<THREE.Group>(null!)
   const boatRef = useRef<THREE.Mesh>(null!)
