@@ -1,6 +1,10 @@
-import { ThreeElements, useFrame } from '@react-three/fiber'
-import { useRef } from 'react'
+import { ThreeElements, useFrame, useThree } from '@react-three/fiber'
+import { useEffect, useRef } from 'react'
 import { useGame } from '../hooks/useGame'
+import Boat from './Boat'
+import dat from 'dat.gui'
+import { useMove } from '../hooks/useMove'
+import Bombs from './Bombs'
 
 function Box(props: ThreeElements['mesh']) {
   const meshRef = useRef<THREE.Mesh>(null!)
@@ -15,15 +19,25 @@ function Box(props: ThreeElements['mesh']) {
 
 export default function Space() {
   const { start, startGame, endGame, duration } = useGame()
+  const { x, z } = useMove()
+
+  const camera = useThree(({ camera }) => camera)
+
+  useEffect(() => {
+    const gui = new dat.GUI()
+
+    gui.add(camera.position, 'y', -10, 10, 0.01).name('카메라 Y')
+    gui.add(camera.position, 'z', -10, 10, 0.01).name('카메라 Z')
+  }, [])
 
   console.log({ start, duration })
 
   return (
     <>
-      <ambientLight />
-      <pointLight position={[10, 10, 10]} />
       <Box position={[-1.2, 0, 0]} onClick={startGame} />
       <Box position={[1.2, 0, 0]} onClick={endGame} />
+      <Boat x={x} z={z} />
+      <Bombs fire={start} />
     </>
   )
 }
