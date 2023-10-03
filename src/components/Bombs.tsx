@@ -1,43 +1,53 @@
-import { useId, useState } from 'react'
+import { forwardRef, useEffect, useId, useState } from 'react'
 import Bomb from './Bomb'
 import { useFrame } from '@react-three/fiber'
+import { Group, Object3DEventMap } from 'three'
 
 const initialPositions = () =>
-  Array.from({ length: 10 }, () => [0, 0, 0]).reduce((acc) => {
-    return [...acc, Math.random() * 10 - 5, 0, Math.random() * 10 - 15]
+  Array.from({ length: 100 }, () => [0, 0, 0]).reduce((acc) => {
+    return [...acc, Math.random() * 30 - 15, 0, Math.random() * 300 - 500]
   }, [])
 
-export default function Bombs({ fire }: { fire: boolean }) {
-  const [positions, setPositions] = useState(initialPositions())
+const Bombs = forwardRef<Group<Object3DEventMap>, { fire: boolean }>(
+  ({ fire }, ref) => {
+    const [positions, setPositions] = useState(initialPositions())
 
-  const id = useId()
-  let bombs = []
-  for (let i = 0; i < positions.length / 3; i++) {
-    bombs.push(
-      <Bomb
-        key={`${id}=${i}`}
-        position={[
-          positions[i * 3],
-          positions[i * 3 + 1],
-          positions[i * 3 + 2],
-        ]}
-      />
-    )
-  }
+    const id = useId()
+    let bombs = []
+    for (let i = 0; i < positions.length / 3; i++) {
+      bombs.push(
+        <Bomb
+          key={`${id}=${i}`}
+          position={[
+            positions[i * 3],
+            positions[i * 3 + 1],
+            positions[i * 3 + 2],
+          ]}
+        />
+      )
+    }
 
-  useFrame(() => {
-    if (!fire) return
+    useEffect(() => {
+      if (!fire) return
+      setPositions(initialPositions())
+    }, [fire])
 
-    setPositions((prev) => {
-      const next = [...prev]
+    useFrame(() => {
+      if (!fire) return
 
-      for (let i = 0; i < next.length / 3; i++) {
-        next[i * 3 + 2] += 0.1
-      }
+      setPositions((prev) => {
+        const next = [...prev]
 
-      return next
+        for (let i = 0; i < next.length / 3; i++) {
+          next[i * 3 + 2] += 0.7
+        }
+
+        return next
+      })
     })
-  })
 
-  return bombs
-}
+    return <group ref={ref}>{bombs}</group>
+  }
+)
+
+export default Bombs

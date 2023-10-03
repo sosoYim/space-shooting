@@ -12,6 +12,7 @@ export default function Boat({ x = 0, z = 0 }: { x: number; z: number }) {
         object={gltf.scene}
         position-x={x}
         position-z={z}
+        position-y={0.5}
         rotation={[0, MathUtils.degToRad(180), 0]}
       />
     </>

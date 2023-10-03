@@ -16,7 +16,7 @@ export const useGame = () => {
   useFrame((state) => {
     if (start) {
       if (state.clock.running) {
-        setDuration(state.clock.getElapsedTime())
+        setDuration(Math.round(state.clock.getElapsedTime() * 100) / 100)
         return
       }
       console.log('started')

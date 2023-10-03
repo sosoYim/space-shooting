@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useMove = () => {
   const [x, setX] = useState(0)
@@ -9,45 +9,47 @@ export const useMove = () => {
     false | 'left' | 'right' | 'forward' | 'backward'
   >(false)
 
-  useFrame((state, _) => {
-    if (!move) {
-      state.clock.stop()
-      return
-    }
+  const resetMovement = useCallback(() => {
+    setX(0)
+    setZ(0)
+  }, [])
 
+  useFrame(() => {
     if (move === 'left') {
-      setX((x) => x - 0.01)
+      setX((x) => x - 0.05)
     } else if (move === 'right') {
-      setX((x) => x + 0.01)
+      setX((x) => x + 0.05)
     } else if (move === 'forward') {
-      setZ((z) => z - 0.01)
+      setZ((z) => z - 0.05)
     } else if (move === 'backward') {
-      setZ((z) => z + 0.01)
+      setZ((z) => z + 0.05)
     }
   })
 
-  addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      setMove('left')
-    } else if (e.key === 'ArrowRight') {
-      setMove('right')
-    } else if (e.key === 'ArrowUp') {
-      setMove('forward')
-    } else if (e.key === 'ArrowDown') {
-      setMove('backward')
-    }
-  })
+  useEffect(() => {
+    addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        setMove('left')
+      } else if (e.key === 'ArrowRight') {
+        setMove('right')
+      } else if (e.key === 'ArrowUp') {
+        setMove('forward')
+      } else if (e.key === 'ArrowDown') {
+        setMove('backward')
+      }
+    })
 
-  addEventListener('keyup', (e) => {
-    if (
-      e.key === 'ArrowLeft' ||
-      e.key === 'ArrowRight' ||
-      e.key === 'ArrowUp' ||
-      e.key === 'ArrowDown'
-    ) {
-      setMove(false)
-    }
-  })
+    addEventListener('keyup', (e) => {
+      if (
+        e.key === 'ArrowLeft' ||
+        e.key === 'ArrowRight' ||
+        e.key === 'ArrowUp' ||
+        e.key === 'ArrowDown'
+      ) {
+        setMove(false)
+      }
+    })
+  }, [])
 
-  return { x, z }
+  return { x, z, resetMovement }
 }
