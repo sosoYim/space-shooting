@@ -11,7 +11,7 @@ import { isIntersecting } from '../utils/isIntersecting'
 
 export default function Space() {
   const { start, startGame, endGame, duration } = useGame()
-  const { x, z } = useMove()
+  const { x, z, resetMovement } = useMove()
 
   const camera = useThree(({ camera }) => camera)
   useEffect(() => {
@@ -30,7 +30,8 @@ export default function Space() {
       isIntersecting({
         target: boatRef.current,
         objects: bombsRef.current.children,
-      })
+      }) ||
+      duration >= 30
     ) {
       console.log('game over')
       endGame()
@@ -40,7 +41,11 @@ export default function Space() {
   return (
     <>
       {!start && duration ? (
-        <ResultButton duration={duration} startGame={startGame} />
+        <ResultButton
+          duration={duration}
+          startGame={startGame}
+          resetMovement={resetMovement}
+        />
       ) : (
         <StartButton start={start} startGame={startGame} duration={duration} />
       )}
