@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useMove = () => {
   const [x, setX] = useState(0)
@@ -8,6 +8,11 @@ export const useMove = () => {
   const [move, setMove] = useState<
     false | 'left' | 'right' | 'forward' | 'backward'
   >(false)
+
+  const resetMovement = useCallback(() => {
+    setX(0)
+    setZ(0)
+  }, [])
 
   useFrame(() => {
     if (move === 'left') {
@@ -46,5 +51,5 @@ export const useMove = () => {
     })
   }, [])
 
-  return { x, z }
+  return { x, z, resetMovement }
 }
