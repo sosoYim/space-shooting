@@ -1,29 +1,58 @@
-import { ThreeElements, useFrame } from '@react-three/fiber'
-import { useRef } from 'react'
+import { useFrame, useThree } from '@react-three/fiber'
+import { useEffect, useRef } from 'react'
 import { useGame } from '../hooks/useGame'
-
-function Box(props: ThreeElements['mesh']) {
-  const meshRef = useRef<THREE.Mesh>(null!)
-  useFrame((_, delta) => (meshRef.current.rotation.x += delta))
-  return (
-    <mesh {...props} ref={meshRef} onClick={props.onClick}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={'hotpink'} />
-    </mesh>
-  )
-}
+import Boat from './Boat'
+import dat from 'dat.gui'
+import { useMove } from '../hooks/useMove'
+import Bombs from './Bombs'
+import StartButton from './StartButton'
+import ResultButton from './ResultButton'
+import { isIntersecting } from '../utils/isIntersecting'
 
 export default function Space() {
   const { start, startGame, endGame, duration } = useGame()
+  const { x, z, resetMovement } = useMove()
 
-  console.log({ start, duration })
+  const camera = useThree(({ camera }) => camera)
+  useEffect(() => {
+    const gui = new dat.GUI()
+    gui.add(camera.position, 'y', -100, 100, 0.01).name('카메라 Y')
+    gui.add(camera.position, 'z', -100, 100, 0.01).name('카메라 Z')
+  }, [])
+
+  const bombsRef = useRef<THREE.Group>(null!)
+  const boatRef = useRef<THREE.Mesh>(null!)
+
+  useFrame(() => {
+    if (!bombsRef.current || !boatRef.current) return
+
+    if (
+      isIntersecting({
+        target: boatRef.current,
+        objects: bombsRef.current.children,
+      }) ||
+      duration >= 30
+    ) {
+      console.log('game over')
+      endGame()
+    }
+  })
 
   return (
     <>
-      <ambientLight />
-      <pointLight position={[10, 10, 10]} />
-      <Box position={[-1.2, 0, 0]} onClick={startGame} />
-      <Box position={[1.2, 0, 0]} onClick={endGame} />
+      {!start && duration ? (
+        <ResultButton
+          duration={duration}
+          startGame={startGame}
+          resetMovement={resetMovement}
+        />
+      ) : (
+        <StartButton start={start} startGame={startGame} duration={duration} />
+      )}
+      <mesh ref={boatRef}>
+        <Boat x={x} z={z} />
+      </mesh>
+      <Bombs fire={start} ref={bombsRef} />
     </>
   )
 }
