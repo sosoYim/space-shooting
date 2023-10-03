@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import Space from './components/Space'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Sky } from '@react-three/drei'
+import Ocean from './components/Ocean'
 
 function App() {
   return (
@@ -14,15 +15,19 @@ function App() {
           right: innerWidth / 2,
           top: innerHeight / 2,
           bottom: innerHeight / -2,
-          near: 1,
-          far: 1000,
+          near: 0,
+          far: 2000,
           zoom: 10,
         }}
       >
+        <pointLight position={[100, 100, 100]} />
+        <pointLight position={[-100, -100, -100]} />
         <ambientLight intensity={5} />
         <axesHelper />
         <OrbitControls />
         <Space />
+        <Sky sunPosition={[500, 150, -1000]} turbidity={0.1} />
+        <Ocean />
       </Canvas>
     </div>
   )
