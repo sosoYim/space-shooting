@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import Bomb from './Bomb'
 import { useFrame } from '@react-three/fiber'
 
@@ -10,10 +10,12 @@ const initialPositions = () =>
 export default function Bombs({ fire }: { fire: boolean }) {
   const [positions, setPositions] = useState(initialPositions())
 
+  const id = useId()
   let bombs = []
   for (let i = 0; i < positions.length / 3; i++) {
     bombs.push(
       <Bomb
+        key={`${id}=${i}`}
         position={[
           positions[i * 3],
           positions[i * 3 + 1],
