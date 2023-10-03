@@ -33,7 +33,6 @@ export default function Space() {
       }) ||
       duration >= 30
     ) {
-      console.log('game over')
       endGame()
     }
   })

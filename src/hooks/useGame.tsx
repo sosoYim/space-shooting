@@ -19,14 +19,12 @@ export const useGame = () => {
         setDuration(Math.round(state.clock.getElapsedTime() * 100) / 100)
         return
       }
-      console.log('started')
       state.clock.start()
       setDuration(0)
     }
 
     if (!start && state.clock.running) {
       state.clock.stop()
-      console.log('stopped')
     }
   })
 
