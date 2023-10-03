@@ -14,7 +14,7 @@ export default function StartButton({
 
   return (
     <Text
-      position={[0, 13, 0]}
+      position={[0, 10.5, 3]}
       fontSize={2}
       color={hover ? 'gold' : 'blue'}
       onPointerEnter={() => setHover(true)}
