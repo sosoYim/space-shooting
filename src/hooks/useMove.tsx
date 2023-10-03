@@ -11,13 +11,13 @@ export const useMove = () => {
 
   useFrame(() => {
     if (move === 'left') {
-      setX((x) => x - 0.01)
+      setX((x) => x - 0.05)
     } else if (move === 'right') {
-      setX((x) => x + 0.01)
+      setX((x) => x + 0.05)
     } else if (move === 'forward') {
-      setZ((z) => z - 0.01)
+      setZ((z) => z - 0.05)
     } else if (move === 'backward') {
-      setZ((z) => z + 0.01)
+      setZ((z) => z + 0.05)
     }
   })
 
