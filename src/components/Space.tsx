@@ -1,5 +1,5 @@
-import { useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useRef } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useRef } from 'react'
 import { useGame } from '../hooks/useGame'
 import Boat from './Boat'
 import { useMove } from '../hooks/useMove'
