@@ -4,8 +4,8 @@ import { useFrame } from '@react-three/fiber'
 import { Group, Object3DEventMap } from 'three'
 
 const initialPositions = () =>
-  Array.from({ length: 50 }, () => [0, 0, 0]).reduce((acc) => {
-    return [...acc, Math.random() * 30 - 15, 0, Math.random() * 30 - 50]
+  Array.from({ length: 100 }, () => [0, 0, 0]).reduce((acc) => {
+    return [...acc, Math.random() * 30 - 15, 0, Math.random() * 300 - 500]
   }, [])
 
 const Bombs = forwardRef<Group<Object3DEventMap>, { fire: boolean }>(
@@ -39,7 +39,7 @@ const Bombs = forwardRef<Group<Object3DEventMap>, { fire: boolean }>(
         const next = [...prev]
 
         for (let i = 0; i < next.length / 3; i++) {
-          next[i * 3 + 2] += 0.1
+          next[i * 3 + 2] += 0.7
         }
 
         return next
