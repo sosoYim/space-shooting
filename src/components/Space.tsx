@@ -23,14 +23,9 @@ export default function Space() {
   const { x, z } = useMove()
 
   const camera = useThree(({ camera }) => camera)
-  const ref = useRef<THREE.Mesh>(null!)
 
   useEffect(() => {
     const gui = new dat.GUI()
-
-    gui.add(ref.current.position, 'y', -100, 100, 0.01).name('TEXT Y')
-    gui.add(ref.current.position, 'x', -100, 100, 0.01).name('TEXT X')
-    gui.add(ref.current.position, 'z', -100, 100, 0.01).name('TEXT Z')
     gui.add(camera.position, 'y', -100, 100, 0.01).name('카메라 Y')
     gui.add(camera.position, 'z', -100, 100, 0.01).name('카메라 Z')
   }, [])
@@ -46,13 +41,12 @@ export default function Space() {
         font="Snowburst One"
         fontSize={2}
         color={hover ? 'gold' : 'blue'}
-        ref={ref}
         onPointerEnter={() => setHover(true)}
         onPointerLeave={() => setHover(false)}
+        onClick={startGame}
       >
-        START
+        {start ? duration.toFixed(2) : 'START'}
       </Text>
-      <Box position={[-1.2, 0, 0]} onClick={startGame} />
       <Box position={[1.2, 0, 0]} onClick={endGame} />
       <Boat x={x} z={z} />
       <Bombs fire={start} />
