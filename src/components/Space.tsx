@@ -1,11 +1,12 @@
 import { ThreeElements, useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useGame } from '../hooks/useGame'
 import Boat from './Boat'
 import dat from 'dat.gui'
 import { useMove } from '../hooks/useMove'
 import Bombs from './Bombs'
-import { Text } from '@react-three/drei'
+import StartButton from './StartButton'
+import ResultButton from './ResultButton'
 
 function Box(props: ThreeElements['mesh']) {
   const meshRef = useRef<THREE.Mesh>(null!)
@@ -32,21 +33,13 @@ export default function Space() {
 
   console.log({ start, duration })
 
-  const [hover, setHover] = useState(false)
-
   return (
     <>
-      <Text
-        position={[0, 13, 0]}
-        font="Snowburst One"
-        fontSize={2}
-        color={hover ? 'gold' : 'blue'}
-        onPointerEnter={() => setHover(true)}
-        onPointerLeave={() => setHover(false)}
-        onClick={startGame}
-      >
-        {start ? duration.toFixed(2) : 'START'}
-      </Text>
+      {!start && duration ? (
+        <ResultButton duration={duration} startGame={startGame} />
+      ) : (
+        <StartButton start={start} startGame={startGame} duration={duration} />
+      )}
       <Box position={[1.2, 0, 0]} onClick={endGame} />
       <Boat x={x} z={z} />
       <Bombs fire={start} />
