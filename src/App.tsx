@@ -17,7 +17,6 @@ function App() {
         <pointLight position={[-100, -100, -100]} />
         <ambientLight intensity={5} />
         <axesHelper />
-        {/* <OrbitControls /> */}
         <Space />
         <Sky sunPosition={[500, 150, -1000]} turbidity={0.1} />
         <Ocean />
