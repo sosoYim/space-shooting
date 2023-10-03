@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useMove = () => {
   const [x, setX] = useState(0)
@@ -9,12 +9,7 @@ export const useMove = () => {
     false | 'left' | 'right' | 'forward' | 'backward'
   >(false)
 
-  useFrame((state, _) => {
-    if (!move) {
-      state.clock.stop()
-      return
-    }
-
+  useFrame(() => {
     if (move === 'left') {
       setX((x) => x - 0.01)
     } else if (move === 'right') {
@@ -26,28 +21,30 @@ export const useMove = () => {
     }
   })
 
-  addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
-      setMove('left')
-    } else if (e.key === 'ArrowRight') {
-      setMove('right')
-    } else if (e.key === 'ArrowUp') {
-      setMove('forward')
-    } else if (e.key === 'ArrowDown') {
-      setMove('backward')
-    }
-  })
+  useEffect(() => {
+    addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        setMove('left')
+      } else if (e.key === 'ArrowRight') {
+        setMove('right')
+      } else if (e.key === 'ArrowUp') {
+        setMove('forward')
+      } else if (e.key === 'ArrowDown') {
+        setMove('backward')
+      }
+    })
 
-  addEventListener('keyup', (e) => {
-    if (
-      e.key === 'ArrowLeft' ||
-      e.key === 'ArrowRight' ||
-      e.key === 'ArrowUp' ||
-      e.key === 'ArrowDown'
-    ) {
-      setMove(false)
-    }
-  })
+    addEventListener('keyup', (e) => {
+      if (
+        e.key === 'ArrowLeft' ||
+        e.key === 'ArrowRight' ||
+        e.key === 'ArrowUp' ||
+        e.key === 'ArrowDown'
+      ) {
+        setMove(false)
+      }
+    })
+  }, [])
 
   return { x, z }
 }
